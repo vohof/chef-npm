@@ -19,6 +19,7 @@ action :install_local do
     cwd path
     command "npm install #{pkg_id}"
     not_if "cd #{path} && npm --no-color ls '#{pkg_id}' 2> /dev/null | grep ' #{pkg_id}'"
+    user new_resource.user
   end
 end
 
@@ -28,6 +29,7 @@ action :install_from_json do
   execute "install NPM packages from package.json at #{path}" do
     cwd path
     command cmd
+    user new_resource.user
   end
 end
 
@@ -37,6 +39,7 @@ action :uninstall do
   execute "uninstall NPM package #{new_resource.name}" do
     command "npm -g uninstall #{pkg_id}"
     only_if "npm --no-color -g ls '#{pkg_id}' 2> /dev/null | grep ' #{pkg_id}'"
+    user new_resource.user
   end
 end
 
@@ -48,5 +51,6 @@ action :uninstall_local do
     cwd path
     command "npm uninstall #{pkg_id}"
     only_if "cd #{path} && npm --no-color ls '#{pkg_id}' 2> /dev/null | grep ' #{pkg_id}'"
+    user new_resource.user
   end
 end
